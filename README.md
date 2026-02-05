@@ -22,5 +22,5 @@ Select the Design Document that matches your domain:
 **Content:** PyTorch DDP Training, Synthetic Data Pipeline (HDF5).
 
 ### 4. For Research / Algorithms
-* 👉 **[`docs/design/geometry_aware_perception_system_design.md`] (./docs/design/geometry_aware_perception_system_design.md)** *(Planned)*
+* 👉 **[`docs/design/geometry_aware_perception_system_design.md`](./docs/design/geometry_aware_perception_system_design.md)** *(Planned)*
 **Content:** **Geometric Positional Encoding (GPE)**, 17-dim Feature Definitions.

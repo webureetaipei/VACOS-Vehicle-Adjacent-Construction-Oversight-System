@@ -1,6 +1,6 @@
 # VACOS System Design Overview
 
-**Status:** Draft (Phase 1) | **Author:** [Your Name] | **Target:** WACV 2026
+**Status:** Draft (Phase 1) | **Author:** Tsung Lung Yang | **Target:** WACV 2026
 
 This document outlines the architectural decisions, trade-offs, and optimization strategies for the VACOS project. It serves as the master blueprint (High-Level Design).
 
@@ -39,30 +39,49 @@ We reject standard heavy runtimes in favor of a customized C++ approach.
 * **Trade-off:** **Feature Engineering vs. End-to-End.**
     * *Decision:* We use explicit features (GPE) to ensure the model learns *physics* (shapes) rather than *artifacts*, improving robust transferability.
 
-## 3. Data Engine Strategy: The "Physics-Aware" Dataset
+## 3. Distributed Infrastructure
+**Goal:** Scale training to process 300+ dense point cloud scenes efficiently using multi-GPU clusters.
+
+### 3.1 Distributed Architecture
+* **Distributed Data Parallel (DDP):**
+    * **Mechanism:** Utilizes `torch.distributed` with NCCL backend to synchronize gradients across multiple GPUs.
+    * **Benefit:** Linearly scales training throughput; enables processing of our large-scale synthetic dataset.
+* **Gradient Accumulation:**
+    * **Mechanism:** Accumulates gradients over $k$ micro-batches before a robust optimizer step.
+    * **Benefit:** Simulates a large effective batch size (e.g., 64 or 128) even when GPU VRAM limits physical batch size to 1 or 2 scenes per card.
+* **Decoupled Data Loading (Producer-Consumer):**
+    * **Mechanism:** Uses shared-memory caching and pre-fetching workers to decouple HDF5 I/O from GPU computation.
+    * **Benefit:** Prevents GPU starvation (idle time) caused by heavy geometric feature extraction (GPE) on the CPU.
+
+### 3.2 Bottlenecks & Trade-offs
+* **Bottleneck Solved:** **Effective Batch Size Limitations.** Point clouds are memory-heavy ($N \approx 10^5$), limiting standard batch training. Gradient accumulation solves this without requiring enterprise-grade 80GB GPUs.
+* **Trade-off:** **Synchronization Overhead vs. Convergence.**
+    * *Decision:* We synchronize gradients less frequently (large accumulation steps) to reduce network overhead, accepting a slightly delayed weight update trajectory which is mitigated by careful learning rate scheduling.
+
+## 4. Data Engine Strategy: The "Physics-Aware" Dataset
 **Goal:** Auto-generate high-quality synthetic data to overcome the "Real-World Data Scarcity" and "Safety constraints".
 
-### 3.1 Data Pipeline
+### 4.1 Data Pipeline
 * **Generation (SketchUp):** Modeling rigorous structural classes (Beams, Columns).
 * **Simulation (Open3D):** Dual-modality Ray-casting (Optical vs. SAR).
 * **Storage (HDF5):** Data is serialized into HDF5 chunks, optimized for high-throughput I/O during DDP training.
 
-### 3.2 Bottlenecks & Trade-offs
+### 4.2 Bottlenecks & Trade-offs
 * **Bottleneck Solved:** **I/O Blocking.** Loading thousands of small .obj/.ply files kills GPU training utilization.
     * *Solution:* Aggregate data into large HDF5 chunks (2GB each) for sequential reads.
 * **Trade-off:** **Simulation Fidelity vs. Speed.**
     * *Decision:* We use Ray-casting with statistical noise (Fast) instead of full Maxwell equation solving (Too Slow), validated by statistical distribution checks (Task 07-B).
 
-## 4. Success Criteria (Engineering KPIs)
+## 5. Success Criteria (Engineering KPIs)
 We define the project's success through strict quantitative metrics.
 
-### 4.1 System Performance KPIs
+### 5.1 System Performance KPIs
 | Component | Metric | Target | Baseline (PyTorch) |
 | :--- | :--- | :--- | :--- |
 | **TinyEngine** | End-to-End Latency | **< 50ms** | ~200ms |
 | **TinyEngine** | Peak Memory | **< 512MB** | > 4GB |
 | **Data Engine** | Generation Rate | **10 Scenes/min** | Manual |
 
-### 4.2 Research Success Metrics (WACV)
+### 5.2 Research Success Metrics (WACV)
 * **Recall (High Occlusion):** Achieve **> 85% Recall** on non-fixed hazards under high occlusion (vs. < 30% for Optical).
 * **Sim-to-Real Validity:** Noise distribution matching real SAR datasets with > 90% correlation.

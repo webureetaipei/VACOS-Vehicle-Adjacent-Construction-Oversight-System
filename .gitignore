@@ -1,0 +1,7 @@
+# Ignore generated data
+data/raw_sketchup/*.obj
+data/processed_points/*.ply
+data/hdf5/*.h5
+
+# But keep the gitkeep files so folder structure exists
+!data/**/.gitkeep

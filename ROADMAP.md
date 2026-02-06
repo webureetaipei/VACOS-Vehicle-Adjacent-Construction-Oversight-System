@@ -4,22 +4,20 @@
 
 ## Phase 1: Physics-Aware Data Engine (Tasks 01-15)
 - [x] **Task 01:** Project initialization, Git setup, and System Architecture Design.
-- [ ] **Task 02:** Simulation Engine Setup (SketchUp & Open3D Dependencies).
-- [ ] **Task 03:** Python Environment Setup (Conda & CUDA).
-- [ ] **Task 04:** Simulation Verification (Headless Ray-casting Check).
-- [ ] **Task 05:** Export pipeline (SketchUp -> .obj) implementation.
-- [ ] **Task 06:** Occlusion configuration definition (Low/Med/High).
-- [ ] **Task 07:** Implement Dual-Modality Ray-casting (Optical vs. SAR Physics).
-- [ ] **Task 07-B:** Simulation Sanity Check (Noise Histogram Validation).
-- [ ] **Task 08:** Batch generation of 6 stratified datasets.
-- [ ] **Task 09:** Auto-labeling logic implementation.
-- [ ] **Task 10-14:** Feature extraction & GeometryEngine.
-- [ ] **Task 15:** QC & Visualization.
+- [x] **Task 02:** Procedural Generation Engine: Unit Cell (Columns + Beams logic).
+- [ ] **Task 03:** Procedural Generation Engine: Full Building Assembly (Floors, Slabs, Walls).
+- [ ] **Task 04:** Procedural Generation Engine: Occlusion Layers (Scaffolding & Nets).
+- [ ] **Task 05:** Procedural Generation Engine: Hazard Injection (Debris & Clutter entropy).
+- [ ] **Task 06:** Occlusion configuration definition (Low/Med/High parameters).
+- [ ] **Task 07:** Implement Dual-Modality Ray-casting (Optical vs. SAR Physics in Open3D).
+- [ ] **Task 07-B:** Simulation Sanity Check (Noise Histogram Validation vs. Real SAR).
+- [ ] **Task 08:** Batch generation of 6 stratified datasets (300 scenes).
+- [ ] **Task 09:** Auto-labeling logic implementation (Semantic ID mapping).
+- [ ] **Task 10:** Feature extraction: LSE (Linearity/Planarity) implementation.
+- [ ] **Task 11:** Feature extraction: GLE (Global Location) implementation.
+- [ ] **Task 12:** Feature extraction: DPE (Density/Distance) implementation.
+- [ ] **Task 13:** Feature extraction: OD (Overlap Disambiguation) implementation.
+- [ ] **Task 14:** `GeometryEngine` class encapsulation & optimization.
+- [ ] **Task 15:** QC & Visualization of synthetic SAR artifacts.
 
 ## Phase 2: Core Experiments & Distributed Training (Tasks 16-40)
-- [ ] **Task 16-17:** Point Transformer & GPE Module implementation.
-- [ ] **Task 18:** Distributed System Setup (PyTorch DDP).
-- [ ] **Task 19-25:** Experiments A & B (Sensing & Geometry).
-
-## Phase 3, 4, 5 (Tasks 41-90)
-- See full documentation for Edge Optimization and Paper Writing.

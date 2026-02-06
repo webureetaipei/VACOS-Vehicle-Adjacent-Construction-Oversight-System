@@ -1,61 +1,53 @@
 # VACOS Environment Setup Guide
 
-## 1. Prerequisite: Hybrid System Setup (Task 01)
-Before starting, ensure your host meets the following requirements:
-* **Host OS:** Windows 10/11 (Required for SketchUp Pro).
-* **Subsystem:** WSL2 enabled with Ubuntu 20.04/22.04 LTS (For Training/Simulation).
+**Status:** Updated for Phase 1 (Procedural Generation)
+
+## 1. System Prerequisites (Task 01)
+Before starting, ensure your host meets the following requirements to support the hybrid development workflow.
+
+* **Host OS:** Windows 10/11 (Development & Visualization).
+* **Subsystem:** WSL2 enabled with Ubuntu 20.04/22.04 LTS (Core Execution Environment).
 * **GPU:** NVIDIA RTX GPU (Driver 535.xx+ installed on Windows Host).
-* **Networking:** Ensure WSL2 allows localhost connections.
 
-### Project Structure Initialization (Part of Task 01)
-Running the initialization script (Task 01) creates the standard research directory structure:
-* `src/sim`: Physics-aware simulation engine (Open3D).
-* `src/tiny_vacos`: C++ Embedded Engine Port.
-* `src/vacos_model`: Deep Learning Models.
+### Project Structure Initialization
+The standard research directory structure established in Task 01:
+* `src/sim`: Contains the Python Procedural Generation Engine (`generate_structure.py`).
+* `src/tiny_vacos`: Reserved for C++ Embedded Engine.
+* `src/vacos_model`: Reserved for PyTorch Models.
+* `data/raw_sketchup`: Stores generated `.obj` artifacts (despite the name, these are now Python-generated).
 
-## 2. Simulation Engine Dependencies (Task 02)
-We utilize a Hybrid workflow: SketchUp (Windows) for Modeling, Open3D (WSL2) for Ray-casting.
+## 2. Procedural Engine Environment (Task 02)
+Instead of manual modeling, we use a Python-based pipeline. This section details how to set up the environment to run the **Unit Cell Generator**.
 
-### 2.1 Windows Side (Modeling)
-* Install SketchUp Pro (or compatible version).
-* Ensure Ruby API access is enabled for export scripts.
+### 2.1 Create Conda Environment
+We use Miniconda to manage dependencies. Run the following commands in your **WSL2 terminal**:
 
-### 2.2 WSL2 Side (Physics Engine)
-Install system-level dependencies for headless rendering:
 ```bash
-sudo apt-get update
-sudo apt-get install -y libgl1-mesa-glx libosmesa6-dev build-essential
-```
-
-## 3. Python & CUDA Environment Setup (Task 03)
-We use Miniconda to manage the deep learning environment.
-
-### 3.1 Create Environment
-```bash
-# Create environment
+# 1. Create the environment
 conda create -n vacos-edge python=3.9 -y
+
+# 2. Activate the environment
 conda activate vacos-edge
-
-# Install PyTorch with CUDA 12.1
-conda install pytorch torchvision pytorch-cuda=12.1 -c pytorch -c nvidia
-
-# Install Simulation & Math Libraries
-pip install open3d numpy scipy scikit-learn ray[default] tqdm h5py
 ```
+### 2.2 Install Core Dependencies
+Install the geometry processing libraries required for the Procedural Engine.
 
-### 3.2 Verification (Milestone Check)
 ```bash
-python -c "import torch; print(f'CUDA Available: {torch.cuda.is_available()}')"
+# Install Trimesh (Geometry), NumPy (Math), and Scipy (Sparse Matrices)
+pip install trimesh numpy scipy
 ```
-**Expected Output:** ✅ CUDA Available: True
 
-## 4. Headless Simulation Configuration (Task 04)
-**Target:** Run ray-casting simulation on remote servers/WSL without GUI.
+### 2.3 Verification: Generating the Unit Cell
+To verify the setup is correct, run the generation script created in Task 02.
 
-### 4.1 Headless Configuration
-Open3D requires specific EGL configuration for headless rendering on WSL2.
 ```bash
-export PYOPENGL_PLATFORM=egl
-python -c "import open3d; print('Open3D Headless Init Success')"
+# Run the generator
+python src/sim/generate_structure.py
 ```
-**Expected Output:** ✅ No errors, clean exit.
+
+Expected Output:
+
+🏗️ Generating Structure...
+✅ Created 2 Columns at (0,0) and (6.0,0)
+✅ Created Beam connecting them (Length: 5.40m)
+🎉 Scene exported to: data/raw_sketchup/task02_structure.obj

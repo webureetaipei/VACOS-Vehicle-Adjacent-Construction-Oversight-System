@@ -24,3 +24,22 @@ Select the Design Document that matches your domain:
 ### 4. For Research / Algorithms
 * 👉 **[`docs/design/geometry_aware_perception_system_design.md`](./docs/design/geometry_aware_perception_system_design.md)** *(Planned)*
 **Content:** **Geometric Positional Encoding (GPE)**, 17-dim Feature Definitions.
+
+## Tech Stack
+* **Simulation:** Python (Trimesh), Open3D Ray-casting
+* **Model:** PyTorch, Point Transformer, GPE
+* **Embedded:** C++17, CUDA, TinyEngine Concepts
+* **Infra:** Docker, WSL2, DDP
+
+---
+
+## 🛠️ Development Log & Visualizations
+
+### Phase 1: Procedural Generation Engine
+We are building a Python-based geometry engine to generate 300+ unique construction scenarios.
+
+**Status:** `Task 02: Parametric Frame Generation`
+Currently verifying the geometric logic for beam-column connections and auto-fitting algorithms.
+
+![Task 02 Demo](docs/images/task02_demo.png)
+*(Fig 1. Automated generation of a portal frame unit using `trimesh` script. Note the precise alignment of the beam between columns.)*

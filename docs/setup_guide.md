@@ -45,9 +45,12 @@ To verify the setup is correct, run the generation script created in Task 02.
 python src/sim/generate_structure.py
 ```
 
-Expected Output:
+**Expected Output:**
 
 🏗️ Generating Structure...
+
 ✅ Created 2 Columns at (0,0) and (6.0,0)
+
 ✅ Created Beam connecting them (Length: 5.40m)
+
 🎉 Scene exported to: data/raw_sketchup/task02_structure.obj

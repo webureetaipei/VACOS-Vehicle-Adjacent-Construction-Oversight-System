@@ -25,6 +25,13 @@ Select the Design Document that matches your domain:
 * 👉 **[`docs/design/geometry_aware_perception_system_design.md`](./docs/design/geometry_aware_perception_system_design.md)** *(Planned)*
 **Content:** **Geometric Positional Encoding (GPE)**, 17-dim Feature Definitions.
 
+### 5. Evidence & Benchmarks (The Proof)
+* 👉 **[`docs/reports/evaluation_results.md`](./docs/reports/evaluation_results.md)** *(Planned)*
+**Content:**
+* **System:** Memory & Latency Profiling (TinyEngine vs. PyTorch on Jetson Orin).
+* **Safety:** Hazard Detection Recall under Heavy Occlusion (SAR vs. Optical).
+* **Robustness:** "Performance vs. Occlusion Ratio" degradation curves.
+
 ## Tech Stack
 * **Simulation:** Python (Trimesh), Open3D Ray-casting
 * **Model:** PyTorch, Point Transformer, GPE
